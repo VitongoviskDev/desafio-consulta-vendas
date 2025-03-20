@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.devsuperior.dsmeta.dto.ReportRequestDTO;
 import com.devsuperior.dsmeta.dto.ReportResponseDTO;
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SummaryRequestDTO;
+import com.devsuperior.dsmeta.dto.SummaryResponseDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
@@ -32,10 +34,23 @@ public class SaleService {
 		LocalDate minDate = dto.getMinDate().isEmpty()
 			? LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()).minusYears(1L)
 			: LocalDate.parse(dto.getMinDate());
+			
 		LocalDate maxDate = dto.getMaxDate().isEmpty() 
 			? LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault())
 			: LocalDate.parse(dto.getMaxDate());
 
 		return repository.getReport(dto.getName(), minDate, maxDate, pageable);
+	}
+
+	public Page<SummaryResponseDTO> getSummary(SummaryRequestDTO dto, Pageable pageable) {
+		LocalDate minDate = dto.getMinDate().isEmpty()
+			? LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()).minusYears(1L)
+			: LocalDate.parse(dto.getMinDate());
+
+		LocalDate maxDate = dto.getMaxDate().isEmpty() 
+			? LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault())
+			: LocalDate.parse(dto.getMaxDate());
+
+		return repository.getSummary(minDate, maxDate, pageable);
 	}
 }
